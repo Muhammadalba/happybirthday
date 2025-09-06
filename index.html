@@ -11,13 +11,14 @@
             background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 30%, #fd79a8 70%, #6c5ce7 100%);
             min-height: 100vh;
             color: #2d3436;
+            overflow-x: hidden;
         }
         .bg-flowers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
         .flower { position: absolute; font-size: 1.5rem; animation: float 8s ease-in-out infinite; opacity: 0.4; }
         @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; } 50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; } }
         
-        .nav { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; }
-        .nav-btn { padding: 10px 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; color: white; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .nav { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; flex-wrap: wrap; }
+        .nav-btn { padding: 10px 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; color: white; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; font-size: 0.9rem; }
         .nav-btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
         
         .section { display: none; padding: 20px; min-height: 100vh; }
@@ -29,17 +30,179 @@
         .welcome p { font-size: 1.2rem; color: rgba(255,255,255,0.9); text-shadow: 0 2px 8px rgba(0,0,0,0.2); line-height: 1.6; }
         
         .cake-container { display: flex; justify-content: center; align-items: center; min-height: 80vh; flex-direction: column; }
-        .cake { position: relative; cursor: pointer; transition: all 0.3s ease; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3)); }
+        .cake { position: relative; cursor: pointer; transition: all 0.3s ease; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4)); }
         .cake:hover { transform: scale(1.05); }
-        .cake-base { width: 300px; height: 200px; background: linear-gradient(145deg, #8B4513, #D2691E); border-radius: 20px; position: relative; transition: all 0.5s ease; }
-        .cake-layer { width: 280px; height: 60px; background: linear-gradient(145deg, #FFE4E1, #FFC0CB); border-radius: 15px; position: absolute; top: -30px; left: 10px; transition: all 0.5s ease; }
-        .candles { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; }
-        .candle { width: 10px; height: 40px; background: linear-gradient(145deg, #FFD700, #FFA500); border-radius: 5px; position: relative; }
-        .flame { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 8px; height: 12px; background: radial-gradient(circle, #FFA500, #FF4500); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; animation: flicker 1.5s ease-in-out infinite; box-shadow: 0 0 15px rgba(255,165,0,0.6); }
-        @keyframes flicker { 0% { transform: translateX(-50%) rotate(-2deg) scale(0.9); } 100% { transform: translateX(-50%) rotate(2deg) scale(1.1); } }
+        
+        /* Cake base dengan gradient dan tekstur */
+        .cake-base { 
+            width: 300px; 
+            height: 200px; 
+            background: linear-gradient(145deg, #8B4513 0%, #D2691E 50%, #CD853F 100%); 
+            border-radius: 20px; 
+            position: relative; 
+            transition: all 0.5s ease; 
+            overflow: hidden;
+            box-shadow: 
+                inset 0 -10px 20px rgba(0,0,0,0.3),
+                0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* Tekstur coklat pada kue */
+        .cake-base::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(139,69,19,0.8) 2px, transparent 2px),
+                radial-gradient(circle at 80% 60%, rgba(160,82,45,0.6) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 40% 80%, rgba(210,180,140,0.4) 1px, transparent 1px);
+            background-size: 25px 25px, 30px 30px, 20px 20px;
+        }
+        
+        /* Layer krim dengan detail */
+        .cake-layer { 
+            width: 280px; 
+            height: 60px; 
+            background: linear-gradient(145deg, #FFE4E1 0%, #FFC0CB 30%, #FFB6C1 70%, #FFA0B4 100%); 
+            border-radius: 15px; 
+            position: absolute; 
+            top: -30px; 
+            left: 10px; 
+            transition: all 0.5s ease;
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.2),
+                inset 0 2px 5px rgba(255,255,255,0.5);
+        }
+        
+        /* Dekorasi krim */
+        .cake-layer::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 20px;
+            right: 20px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FF69B4, transparent);
+            border-radius: 2px;
+        }
+        
+        .candles { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; }
+        .candle { 
+            width: 12px; 
+            height: 50px; 
+            background: linear-gradient(145deg, #FF6B6B 0%, #4ECDC4 50%, #45B7D1 100%); 
+            border-radius: 6px; 
+            position: relative;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+        
+        /* Wax drips */
+        .candle::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 2px;
+            width: 8px;
+            height: 15px;
+            background: inherit;
+            border-radius: 0 0 50% 50%;
+            opacity: 0.7;
+        }
+        
+        .flame { 
+            position: absolute; 
+            top: -20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 10px; 
+            height: 15px; 
+            background: radial-gradient(ellipse at center, #FFF 0%, #FFFF00 20%, #FF6347 60%, #FF4500 100%); 
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; 
+            animation: flicker 1.5s ease-in-out infinite; 
+            box-shadow: 
+                0 0 20px rgba(255,165,0,0.8),
+                0 0 40px rgba(255,69,0,0.4);
+        }
+        
+        /* Inner flame */
+        .flame::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 8px;
+            background: radial-gradient(ellipse, #FFF 0%, #FFFF88 50%, transparent 100%);
+            border-radius: 50%;
+        }
+        
+        @keyframes flicker { 
+            0%, 100% { transform: translateX(-50%) rotate(-2deg) scale(0.9); } 
+            25% { transform: translateX(-50%) rotate(1deg) scale(1.1); }
+            50% { transform: translateX(-50%) rotate(-1deg) scale(1.05); }
+            75% { transform: translateX(-50%) rotate(2deg) scale(1.0); }
+        }
+        
         .flame.blown-out { animation: blowOut 0.5s ease-out forwards; }
         @keyframes blowOut { 0% { opacity: 1; transform: translateX(-50%) scale(1); } 100% { opacity: 0; transform: translateX(-50%) scale(0); } }
+        
+        /* Smoke effect after blowing */
+        .smoke {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 20px;
+            background: linear-gradient(to top, rgba(128,128,128,0.6), transparent);
+            border-radius: 50%;
+            animation: smoke-rise 2s ease-out forwards;
+        }
+        
+        @keyframes smoke-rise {
+            0% { opacity: 0.6; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(2); }
+        }
+        
         .cake-instruction { text-align: center; font-size: 1.1rem; color: white; margin-top: 30px; opacity: 0.9; }
+
+        /* Enhanced chocolate splash */
+        .choco-splash { 
+            position: absolute; 
+            width: 8px; 
+            height: 8px; 
+            border-radius: 50%; 
+            animation: splash 1.5s ease-out forwards; 
+        }
+        .choco-splash:nth-child(odd) { background: #8B4513; }
+        .choco-splash:nth-child(even) { background: #A0522D; }
+        .choco-splash:nth-child(3n) { background: #CD853F; }
+        
+        @keyframes splash { 
+            0% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { transform: translate(var(--x), var(--y)) scale(0.3) rotate(720deg); opacity: 0; }
+        }
+        
+        /* Sparkle effect */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            animation: sparkle 1s ease-out forwards;
+        }
+        
+        @keyframes sparkle {
+            0% { transform: translate(0,0) scale(0); opacity: 1; }
+            50% { transform: translate(var(--sx), var(--sy)) scale(1); opacity: 1; }
+            100% { transform: translate(var(--sx), var(--sy)) scale(0); opacity: 0; }
+        }
         
         .puzzle-container { max-width: 600px; margin: 50px auto; text-align: center; }
         .puzzle-question { background: rgba(255,255,255,0.15); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; margin-bottom: 20px; color: white; border: 1px solid rgba(255,255,255,0.2); }
@@ -56,7 +219,7 @@
         .wish-flower { position: relative; cursor: pointer; text-align: center; transition: all 0.3s ease; }
         .wish-flower:hover { transform: scale(1.1) translateY(-5px); }
         .flower-stem { width: 6px; height: 100px; background: linear-gradient(to bottom, #2ecc71, #27ae60); margin: 0 auto; border-radius: 3px; }
-        .flower-head { width: 60px; height: 60px; background: linear-gradient(135deg, #fd79a8, #fdcb6e); border-radius: 50%; margin: -30px auto 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 2px solid rgba(255,255,255,0.3); }
+        .flower-head { width: 60px; height: 60px; background: linear-gradient(135deg, #fd79a8, #fdcb6e); border-radius: 50%; margin: -30px auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 2px solid rgba(255,255,255,0.3); }
         .flower-head::before { content: '🌸'; font-size: 2rem; }
         
         .wish-letter { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; max-width: 400px; width: 90%; z-index: 2000; transition: all 0.3s ease; opacity: 0; }
@@ -70,11 +233,29 @@
         .petal { position: fixed; pointer-events: none; z-index: 1000; font-size: 1.5rem; animation: fly 3s ease-out forwards; }
         @keyframes fly { 0% { opacity: 1; transform: translateY(0) rotate(0deg); } 100% { opacity: 0; transform: translateY(-100vh) rotate(360deg); } }
         
+        /* Mobile optimizations */
         @media (max-width: 768px) { 
             .welcome h1 { font-size: 2rem; } 
             .cake-base { width: 250px; height: 150px; } 
-            .cake-layer { width: 230px; } 
+            .cake-layer { width: 230px; height: 45px; top: -22px; } 
             .puzzle-options { grid-template-columns: 1fr; }
+            .candles { top: -80px; gap: 20px; }
+            .candle { width: 10px; height: 40px; }
+            .nav { top: 10px; right: 10px; }
+            .nav-btn { padding: 8px 12px; font-size: 0.8rem; }
+        }
+        
+        /* Eating animation */
+        .eating-animation {
+            animation: eat 0.5s ease-in-out;
+        }
+        
+        @keyframes eat {
+            0% { transform: scale(1); }
+            25% { transform: scale(0.95); }
+            50% { transform: scale(0.9); }
+            75% { transform: scale(0.95); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -107,7 +288,7 @@
                 <div class="cake-layer"></div>
                 <div class="cake-base" id="cakeBase"></div>
             </div>
-            <p class="cake-instruction">Geser untuk meniup lilin, klik kue untuk memakannya ✨</p>
+            <p class="cake-instruction">Geser untuk meniup lilin, tap kue untuk memakannya ✨</p>
         </div>
     </div>
 
@@ -146,11 +327,13 @@
         let candlesLit = 3;
         let cakeSlices = 8;
         let currentPuzzle = 0;
+        let isBlowing = false;
 
         const puzzles = [
             { question: "Apa yang selalu bertambah setiap tahun tapi tidak pernah berkurang?", options: ["Tinggi Badan", "Usia & Pengalaman", "Berat Badan", "Harta Benda"], correct: 1 },
             { question: "Aku memiliki mahkota namun bukan raja, aku manis namun bukan gula. Apakah aku?", options: ["Kue Ulang Tahun", "Bunga Matahari", "Permen Coklat", "Es Krim"], correct: 0 },
-            { question: "Aku datang sekali dalam setahun, semua orang merayakanku. Apakah aku?", options: ["Natal", "Lebaran", "Ulang Tahun", "Tahun Baru"], correct: 2 }
+            { question: "Aku datang sekali dalam setahun, semua orang merayakanku. Apakah aku?", options: ["Natal", "Lebaran", "Ulang Tahun", "Tahun Baru"], correct: 2 },
+            { question: "Siapa cowok paling ganteng di dunia ini ?", options: ["Song Kang", "Alba", "Lee Min Ho", "Park Seo Joon"], correct: 1 }
         ];
 
         const wishes = [
@@ -176,109 +359,202 @@
             }
         }
 
-        function showSection(sectionName) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(sectionName).classList.add('active');
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
 
         function setupCake() {
             const cake = document.getElementById('cakeElement');
             const cakeBase = document.getElementById('cakeBase');
-            let startX = 0, isSwiping = false;
+            let startX = 0, startY = 0;
 
-            function handleStart(x) { startX = x; isSwiping = true; }
-            function handleMove(x) {
-                if (isSwiping && Math.abs(x - startX) > 50 && candlesLit > 0) {
-                    blowCandle(); isSwiping = false;
+            // Desktop events
+            cake.addEventListener('mousedown', function(e) {
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+
+            cake.addEventListener('mousemove', function(e) {
+                if (Math.abs(e.clientX - startX) > 50 || Math.abs(e.clientY - startY) > 50) {
+                    if (candlesLit > 0 && !isBlowing) {
+                        blowCandle();
+                        isBlowing = true;
+                        setTimeout(() => isBlowing = false, 500);
+                    }
                 }
-            }
-            function handleEnd() { isSwiping = false; }
+            });
 
-            cake.addEventListener('mousedown', e => handleStart(e.clientX));
-            cake.addEventListener('mousemove', e => handleMove(e.clientX));
-            cake.addEventListener('mouseup', handleEnd);
-            cake.addEventListener('touchstart', e => { handleStart(e.touches[0].clientX); e.preventDefault(); });
-            cake.addEventListener('touchmove', e => { handleMove(e.touches[0].clientX); e.preventDefault(); });
-            cake.addEventListener('touchend', handleEnd);
-            cakeBase.addEventListener('click', eatCake);
+            // Mobile events - separated to prevent conflicts
+            cake.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+            });
+
+            cake.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                if (Math.abs(touch.clientX - startX) > 50 || Math.abs(touch.clientY - startY) > 50) {
+                    if (candlesLit > 0 && !isBlowing) {
+                        blowCandle();
+                        isBlowing = true;
+                        setTimeout(() => isBlowing = false, 500);
+                    }
+                }
+            });
+
+            // Separate cake eating handlers
+            cakeBase.addEventListener('click', function(e) {
+                e.stopPropagation();
+                eatCake();
+            });
+
+            // Mobile tap for eating cake
+            cakeBase.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const touch = e.changedTouches[0];
+                const moveDistance = Math.abs(touch.clientX - startX) + Math.abs(touch.clientY - startY);
+                
+                // Only eat if it's a tap (minimal movement)
+                if (moveDistance < 20) {
+                    eatCake();
+                }
+            });
         }
 
         function blowCandle() {
-            if (candlesLit > 0) {
-                document.querySelectorAll('.flame')[candlesLit - 1].classList.add('blown-out');
+            const flames = document.querySelectorAll('.flame:not(.blown-out)');
+            if (flames.length > 0) {
+                const flame = flames[Math.floor(Math.random() * flames.length)];
+                flame.classList.add('blown-out');
+                
+                // Add smoke effect
+                const smoke = document.createElement('div');
+                smoke.className = 'smoke';
+                flame.parentNode.appendChild(smoke);
+                setTimeout(() => smoke.remove(), 2000);
+                
                 candlesLit--;
-                createFlyingPetals();
-                if (candlesLit === 0) setTimeout(() => alert('🎉 Semua lilin ditiup! Klik kue untuk memakannya!'), 500);
             }
         }
 
         function eatCake() {
             if (cakeSlices > 0) {
                 cakeSlices--;
-                const cake = document.getElementById('cakeElement');
                 const cakeBase = document.getElementById('cakeBase');
                 
-                // Add visual feedback
-                cakeBase.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    cakeBase.style.transform = 'scale(1)';
-                }, 200);
+                // Add eating animation
+                cakeBase.classList.add('eating-animation');
+                setTimeout(() => cakeBase.classList.remove('eating-animation'), 500);
                 
-                const newWidth = (cakeSlices / 8) * 300;
-                document.getElementById('cakeBase').style.width = newWidth + 'px';
-                document.querySelector('.cake-layer').style.width = (newWidth - 20) + 'px';
-                createFlyingPetals();
-                if (cakeSlices === 0) setTimeout(() => { alert('🍰 Kue habis! Yummy!'); resetCake(); }, 500);
+                cakeBase.style.height = (200 * (cakeSlices / 8)) + 'px';
+                cakeBase.style.transition = 'height 0.5s ease';
+
+                // Enhanced chocolate splashes
+                for (let i = 0; i < 12; i++) {
+                    const splash = document.createElement('div');
+                    splash.className = 'choco-splash';
+                    splash.style.left = (cakeBase.offsetWidth / 2) + 'px';
+                    splash.style.top = (cakeBase.offsetHeight / 2) + 'px';
+                    splash.style.setProperty('--x', (Math.random() * 300 - 150) + 'px');
+                    splash.style.setProperty('--y', (Math.random() * -200 - 50) + 'px');
+                    cakeBase.appendChild(splash);
+                    setTimeout(() => splash.remove(), 1500);
+                }
+
+                // Add sparkle effects
+                for (let i = 0; i < 8; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = (cakeBase.offsetWidth / 2) + 'px';
+                    sparkle.style.top = (cakeBase.offsetHeight / 2) + 'px';
+                    sparkle.style.setProperty('--sx', (Math.random() * 100 - 50) + 'px');
+                    sparkle.style.setProperty('--sy', (Math.random() * -100 - 20) + 'px');
+                    cakeBase.appendChild(sparkle);
+                    setTimeout(() => sparkle.remove(), 1000);
+                }
+
+                if (cakeSlices === 0) {
+                    const cake = document.getElementById('cakeElement');
+                    cake.style.opacity = 0;
+                    cake.style.transition = 'opacity 1s ease';
+                    setTimeout(() => {
+                        cake.innerHTML = '<div style="text-align:center;color:white;font-size:2rem;margin-top:100px;">🎉 Kue habis dimakan! 🎉</div>';
+                        cake.style.opacity = 1;
+                    }, 1000);
+                }
             }
         }
 
-        function resetCake() {
-            cakeSlices = 8; candlesLit = 3;
-            document.getElementById('cakeBase').style.width = '300px';
-            document.querySelector('.cake-layer').style.width = '280px';
-            document.querySelectorAll('.flame').forEach(f => f.classList.remove('blown-out'));
-        }
-
-        function checkAnswer(isCorrect) {
-            const result = document.getElementById('puzzleResult');
-            if (isCorrect) {
-                result.innerHTML = '🎉 Benar! Kamu hebat!';
-                result.style.color = '#27ae60';
-                createFlyingPetals();
-                setTimeout(nextPuzzle, 2000);
+        function loadPuzzle() {
+            if (currentPuzzle < puzzles.length) {
+                const p = puzzles[currentPuzzle];
+                document.getElementById('questionText').textContent = p.question;
+                const optionsContainer = document.getElementById('puzzleOptions');
+                optionsContainer.innerHTML = '';
+                p.options.forEach((opt, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'puzzle-option';
+                    btn.textContent = opt;
+                    btn.onclick = () => checkAnswer(i === p.correct);
+                    optionsContainer.appendChild(btn);
+                });
+                document.getElementById('puzzleResult').textContent = '';
             } else {
-                result.innerHTML = '😅 Coba lagi!';
-                result.style.color = '#e74c3c';
+                document.getElementById('puzzleQuestion').innerHTML = `
+                    <h2>🎉 Selamat!</h2>
+                    <p>Kamu berhasil menyelesaikan semua teka-teki!</p>
+                    <p style="margin-top: 15px; font-size: 0.9rem;">Terutama yang terakhir... Alba memang paling ganteng! 😉</p>
+                `;
             }
         }
 
-        function nextPuzzle() {
-            currentPuzzle++;
-            if (currentPuzzle >= puzzles.length) {
-                document.getElementById('puzzleQuestion').innerHTML = '<h2>🏆 Selamat!</h2><p>Semua teka-teki selesai!</p><p style="font-size: 2rem;">🎊🎉🎊</p>';
-                return;
+        function checkAnswer(correct) {
+            const result = document.getElementById('puzzleResult');
+            if (correct) {
+                if (currentPuzzle === 3) { // Special message for Alba question
+                    result.textContent = '✨ Benar banget! Alba emang paling ganteng! 😍';
+                } else {
+                    result.textContent = '✨ Benar sekali! Kamu hebat!';
+                }
+                result.style.color = 'lightgreen';
+                currentPuzzle++;
+                setTimeout(loadPuzzle, 1500);
+            } else {
+                if (currentPuzzle === 3) { // Special message for Alba question
+                    result.textContent = '❌ Hayoloh... masa Alba kalah sama aktor Korea? 😏';
+                } else {
+                    result.textContent = '❌ Coba lagi ya!';
+                }
+                result.style.color = 'salmon';
             }
-            const puzzle = puzzles[currentPuzzle];
-            document.getElementById('questionText').textContent = puzzle.question;
-            document.getElementById('puzzleOptions').innerHTML = puzzle.options.map((opt, i) => 
-                `<button class="puzzle-option" onclick="checkAnswer(${i === puzzle.correct})">${opt}</button>`
-            ).join('');
-            document.getElementById('puzzleResult').innerHTML = '';
         }
 
-        function createWishlistGarden() {
+        function loadWishlist() {
             const garden = document.getElementById('wishlistGarden');
-            wishes.forEach(wish => {
+            wishes.forEach((wish, i) => {
                 const flower = document.createElement('div');
                 flower.className = 'wish-flower';
-                flower.innerHTML = '<div class="flower-head"></div><div class="flower-stem"></div>';
-                flower.addEventListener('click', () => openWishLetter(wish));
+                flower.innerHTML = `
+                    <div class="flower-head">
+                        <div class="rose-petal" style="--transform: translate(-50%, -70%) rotate(-60deg)"></div>
+                        <div class="rose-petal" style="--transform: translate(-50%, -70%) rotate(0deg)"></div>
+                        <div class="rose-petal" style="--transform: translate(-50%, -70%) rotate(60deg)"></div>
+                        <div class="rose-petal" style="--transform: translate(-50%, -30%) rotate(-120deg)"></div>
+                        <div class="rose-petal" style="--transform: translate(-50%, -30%) rotate(180deg)"></div>
+                        <div class="rose-petal" style="--transform: translate(-50%, -30%) rotate(120deg)"></div>
+                        <div class="rose-center"></div>
+                    </div>
+                `;
+                flower.onclick = () => openLetter(wish);
                 garden.appendChild(flower);
             });
         }
 
-        function openWishLetter(wish) {
-            createFlyingPetals();
+        function openLetter(wish) {
             document.getElementById('letterTitle').textContent = wish.title;
             document.getElementById('letterContent').textContent = wish.content;
             document.getElementById('overlay').classList.add('show');
@@ -290,24 +566,11 @@
             document.getElementById('wishLetter').classList.remove('show');
         }
 
-        function createFlyingPetals() {
-            const petals = ['🌸', '🌺', '🌼', '🌻', '🌹'];
-            for (let i = 0; i < 8; i++) {
-                const petal = document.createElement('div');
-                petal.className = 'petal';
-                petal.textContent = petals[Math.floor(Math.random() * petals.length)];
-                petal.style.left = Math.random() * window.innerWidth + 'px';
-                petal.style.top = window.innerHeight + 'px';
-                document.body.appendChild(petal);
-                setTimeout(() => petal.remove(), 3000);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            createBackgroundFlowers();
-            setupCake();
-            createWishlistGarden();
-        });
+        // Initialize everything when page loads
+        createBackgroundFlowers();
+        setupCake();
+        loadPuzzle();
+        loadWishlist();
     </script>
 </body>
 </html>
