@@ -215,6 +215,15 @@
         function eatCake() {
             if (cakeSlices > 0) {
                 cakeSlices--;
+                const cake = document.getElementById('cakeElement');
+                const cakeBase = document.getElementById('cakeBase');
+                
+                // Add visual feedback
+                cakeBase.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    cakeBase.style.transform = 'scale(1)';
+                }, 200);
+                
                 const newWidth = (cakeSlices / 8) * 300;
                 document.getElementById('cakeBase').style.width = newWidth + 'px';
                 document.querySelector('.cake-layer').style.width = (newWidth - 20) + 'px';
@@ -301,5 +310,4 @@
         });
     </script>
 </body>
-
 </html>
