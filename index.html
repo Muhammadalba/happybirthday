@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun 🌸</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 30%, #fd79a8 70%, #6c5ce7 100%);
+            min-height: 100vh;
+            color: #2d3436;
+        }
+        .bg-flowers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .flower { position: absolute; font-size: 1.5rem; animation: float 8s ease-in-out infinite; opacity: 0.4; }
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; } 50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; } }
+        
+        .nav { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; }
+        .nav-btn { padding: 10px 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; color: white; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .nav-btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+        
+        .section { display: none; padding: 20px; min-height: 100vh; }
+        .section.active { display: block; }
+        
+        .welcome { text-align: center; padding-top: 100px; max-width: 800px; margin: 0 auto; }
+        .welcome h1 { font-size: 3rem; color: white; text-shadow: 0 5px 15px rgba(0,0,0,0.3); margin-bottom: 30px; animation: bounce 2s ease-in-out infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .welcome p { font-size: 1.2rem; color: rgba(255,255,255,0.9); text-shadow: 0 2px 8px rgba(0,0,0,0.2); line-height: 1.6; }
+        
+        .cake-container { display: flex; justify-content: center; align-items: center; min-height: 80vh; flex-direction: column; }
+        .cake { position: relative; cursor: pointer; transition: all 0.3s ease; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3)); }
+        .cake:hover { transform: scale(1.05); }
+        .cake-base { width: 300px; height: 200px; background: linear-gradient(145deg, #8B4513, #D2691E); border-radius: 20px; position: relative; transition: all 0.5s ease; }
+        .cake-layer { width: 280px; height: 60px; background: linear-gradient(145deg, #FFE4E1, #FFC0CB); border-radius: 15px; position: absolute; top: -30px; left: 10px; transition: all 0.5s ease; }
+        .candles { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; }
+        .candle { width: 10px; height: 40px; background: linear-gradient(145deg, #FFD700, #FFA500); border-radius: 5px; position: relative; }
+        .flame { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 8px; height: 12px; background: radial-gradient(circle, #FFA500, #FF4500); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; animation: flicker 1.5s ease-in-out infinite; box-shadow: 0 0 15px rgba(255,165,0,0.6); }
+        @keyframes flicker { 0% { transform: translateX(-50%) rotate(-2deg) scale(0.9); } 100% { transform: translateX(-50%) rotate(2deg) scale(1.1); } }
+        .flame.blown-out { animation: blowOut 0.5s ease-out forwards; }
+        @keyframes blowOut { 0% { opacity: 1; transform: translateX(-50%) scale(1); } 100% { opacity: 0; transform: translateX(-50%) scale(0); } }
+        .cake-instruction { text-align: center; font-size: 1.1rem; color: white; margin-top: 30px; opacity: 0.9; }
+        
+        .puzzle-container { max-width: 600px; margin: 50px auto; text-align: center; }
+        .puzzle-question { background: rgba(255,255,255,0.15); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; margin-bottom: 20px; color: white; border: 1px solid rgba(255,255,255,0.2); }
+        .puzzle-question h2 { font-size: 1.8rem; margin-bottom: 20px; }
+        .puzzle-question p { font-size: 1.1rem; margin-bottom: 20px; font-style: italic; }
+        .puzzle-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .puzzle-option { padding: 15px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 15px; cursor: pointer; transition: all 0.3s ease; }
+        .puzzle-option:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        
+        .wishlist-section { text-align: center; padding: 50px 20px; }
+        .wishlist-title { font-size: 2.5rem; color: white; margin-bottom: 20px; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .wishlist-subtitle { font-size: 1rem; color: rgba(255,255,255,0.9); margin-bottom: 40px; }
+        .wishlist-garden { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
+        .wish-flower { position: relative; cursor: pointer; text-align: center; transition: all 0.3s ease; }
+        .wish-flower:hover { transform: scale(1.1) translateY(-5px); }
+        .flower-stem { width: 6px; height: 100px; background: linear-gradient(to bottom, #2ecc71, #27ae60); margin: 0 auto; border-radius: 3px; }
+        .flower-head { width: 60px; height: 60px; background: linear-gradient(135deg, #fd79a8, #fdcb6e); border-radius: 50%; margin: -30px auto 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 2px solid rgba(255,255,255,0.3); }
+        .flower-head::before { content: '🌸'; font-size: 2rem; }
+        
+        .wish-letter { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; max-width: 400px; width: 90%; z-index: 2000; transition: all 0.3s ease; opacity: 0; }
+        .wish-letter.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .wish-letter h3 { color: #2d3436; margin-bottom: 15px; text-align: center; }
+        .wish-letter p { color: #636e72; line-height: 1.6; text-align: center; }
+        .close-letter { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: #636e72; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .overlay.show { opacity: 1; visibility: visible; }
+        
+        .petal { position: fixed; pointer-events: none; z-index: 1000; font-size: 1.5rem; animation: fly 3s ease-out forwards; }
+        @keyframes fly { 0% { opacity: 1; transform: translateY(0) rotate(0deg); } 100% { opacity: 0; transform: translateY(-100vh) rotate(360deg); } }
+        
+        @media (max-width: 768px) { 
+            .welcome h1 { font-size: 2rem; } 
+            .cake-base { width: 250px; height: 150px; } 
+            .cake-layer { width: 230px; } 
+            .puzzle-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-flowers" id="bgFlowers"></div>
+    
+    <div class="nav">
+        <button class="nav-btn" onclick="showSection('welcome')">🏠 Home</button>
+        <button class="nav-btn" onclick="showSection('cake')">🎂 Kue</button>
+        <button class="nav-btn" onclick="showSection('puzzle')">🧩 Teka-teki</button>
+        <button class="nav-btn" onclick="showSection('wishlist')">🌸 Harapan</button>
+    </div>
+
+    <div id="welcome" class="section active">
+        <div class="welcome">
+            <h1>Selamat Ulang Tahun 🎉</h1>
+            <p>Semoga hari istimewa ini membawa kebahagiaan yang tak terbatas<br>dan tahun yang baru penuh dengan berkah serta keajaiban ✨</p>
+            <p style="margin-top: 30px; opacity: 0.8;">Jelajahi halaman-halaman cantik ini untuk menemukan kejutan dan harapan terbaik untukmu</p>
+        </div>
+    </div>
+
+    <div id="cake" class="section">
+        <div class="cake-container">
+            <div class="cake" id="cakeElement">
+                <div class="candles">
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                </div>
+                <div class="cake-layer"></div>
+                <div class="cake-base" id="cakeBase"></div>
+            </div>
+            <p class="cake-instruction">Geser untuk meniup lilin, klik kue untuk memakannya ✨</p>
+        </div>
+    </div>
+
+    <div id="puzzle" class="section">
+        <div class="puzzle-container">
+            <div class="puzzle-question" id="puzzleQuestion">
+                <h2>🧩 Teka-teki Istimewa</h2>
+                <p id="questionText">Apa yang selalu bertambah setiap tahun tapi tidak pernah berkurang?</p>
+                <div class="puzzle-options" id="puzzleOptions">
+                    <button class="puzzle-option" onclick="checkAnswer(false)">Tinggi Badan</button>
+                    <button class="puzzle-option" onclick="checkAnswer(true)">Usia & Pengalaman</button>
+                    <button class="puzzle-option" onclick="checkAnswer(false)">Berat Badan</button>
+                    <button class="puzzle-option" onclick="checkAnswer(false)">Harta Benda</button>
+                </div>
+                <div id="puzzleResult" style="margin-top: 20px; font-weight: bold;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="wishlist" class="section">
+        <div class="wishlist-section">
+            <h2 class="wishlist-title">Taman Harapan</h2>
+            <p class="wishlist-subtitle">Sentuh setiap bunga untuk membaca doa dan affirmasi terbaik untukmu</p>
+            <div class="wishlist-garden" id="wishlistGarden"></div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeLetter()"></div>
+    <div class="wish-letter" id="wishLetter">
+        <button class="close-letter" onclick="closeLetter()">&times;</button>
+        <h3 id="letterTitle">💝 Pesan Spesial</h3>
+        <p id="letterContent"></p>
+    </div>
+
+    <script>
+        let candlesLit = 3;
+        let cakeSlices = 8;
+        let currentPuzzle = 0;
+
+        const puzzles = [
+            { question: "Apa yang selalu bertambah setiap tahun tapi tidak pernah berkurang?", options: ["Tinggi Badan", "Usia & Pengalaman", "Berat Badan", "Harta Benda"], correct: 1 },
+            { question: "Aku memiliki mahkota namun bukan raja, aku manis namun bukan gula. Apakah aku?", options: ["Kue Ulang Tahun", "Bunga Matahari", "Permen Coklat", "Es Krim"], correct: 0 },
+            { question: "Aku datang sekali dalam setahun, semua orang merayakanku. Apakah aku?", options: ["Natal", "Lebaran", "Ulang Tahun", "Tahun Baru"], correct: 2 }
+        ];
+
+        const wishes = [
+            { title: "✨ Kesehatan & Kebahagiaan", content: "Semoga kesehatan selalu menyertaimu, kebahagiaan mengalir dalam setiap detik hidupmu, dan kedamaian hati menjadi sahabat setia." },
+            { title: "🌟 Impian Terwujud", content: "Semoga setiap impian yang kamu tanam dapat berbunga menjadi kenyataan yang indah, dan setiap langkah membawa lebih dekat pada tujuan." },
+            { title: "💕 Cinta & Persahabatan", content: "Semoga kamu selalu dikelilingi oleh orang-orang yang tulus mencintai dan menghargaimu, persahabatan sejati yang tak lekang waktu." },
+            { title: "🙏 Keberkahan Hidup", content: "Semoga setiap nafas yang kamu hirup membawa berkah, setiap rezeki penuh barakah, dan setiap jalan dimudahkan Yang Maha Kuasa." },
+            { title: "💪 Kekuatan & Ketabahan", content: "Semoga kamu selalu kuat menghadapi tantangan hidup dan tabah dalam menghadapi setiap cobaan. Kamu hebat!" },
+            { title: "👨‍👩‍👧‍👦 Keluarga Harmonis", content: "Semoga keluarga kamu selalu harmonis, penuh kasih sayang, dan saling mendukung satu sama lain dalam setiap langkah." }
+        ];
+
+        function createBackgroundFlowers() {
+            const container = document.getElementById('bgFlowers');
+            const flowers = ['🌸', '🌺', '🌼', '🌻', '🌹', '🌷'];
+            for (let i = 0; i < 15; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                flower.style.left = Math.random() * 100 + '%';
+                flower.style.top = Math.random() * 100 + '%';
+                flower.style.animationDelay = Math.random() * 8 + 's';
+                container.appendChild(flower);
+            }
+        }
+
+        function showSection(sectionName) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionName).classList.add('active');
+        }
+
+        function setupCake() {
+            const cake = document.getElementById('cakeElement');
+            const cakeBase = document.getElementById('cakeBase');
+            let startX = 0, isSwiping = false;
+
+            function handleStart(x) { startX = x; isSwiping = true; }
+            function handleMove(x) {
+                if (isSwiping && Math.abs(x - startX) > 50 && candlesLit > 0) {
+                    blowCandle(); isSwiping = false;
+                }
+            }
+            function handleEnd() { isSwiping = false; }
+
+            cake.addEventListener('mousedown', e => handleStart(e.clientX));
+            cake.addEventListener('mousemove', e => handleMove(e.clientX));
+            cake.addEventListener('mouseup', handleEnd);
+            cake.addEventListener('touchstart', e => { handleStart(e.touches[0].clientX); e.preventDefault(); });
+            cake.addEventListener('touchmove', e => { handleMove(e.touches[0].clientX); e.preventDefault(); });
+            cake.addEventListener('touchend', handleEnd);
+            cakeBase.addEventListener('click', eatCake);
+        }
+
+        function blowCandle() {
+            if (candlesLit > 0) {
+                document.querySelectorAll('.flame')[candlesLit - 1].classList.add('blown-out');
+                candlesLit--;
+                createFlyingPetals();
+                if (candlesLit === 0) setTimeout(() => alert('🎉 Semua lilin ditiup! Klik kue untuk memakannya!'), 500);
+            }
+        }
+
+        function eatCake() {
+            if (cakeSlices > 0) {
+                cakeSlices--;
+                const newWidth = (cakeSlices / 8) * 300;
+                document.getElementById('cakeBase').style.width = newWidth + 'px';
+                document.querySelector('.cake-layer').style.width = (newWidth - 20) + 'px';
+                createFlyingPetals();
+                if (cakeSlices === 0) setTimeout(() => { alert('🍰 Kue habis! Yummy!'); resetCake(); }, 500);
+            }
+        }
+
+        function resetCake() {
+            cakeSlices = 8; candlesLit = 3;
+            document.getElementById('cakeBase').style.width = '300px';
+            document.querySelector('.cake-layer').style.width = '280px';
+            document.querySelectorAll('.flame').forEach(f => f.classList.remove('blown-out'));
+        }
+
+        function checkAnswer(isCorrect) {
+            const result = document.getElementById('puzzleResult');
+            if (isCorrect) {
+                result.innerHTML = '🎉 Benar! Kamu hebat!';
+                result.style.color = '#27ae60';
+                createFlyingPetals();
+                setTimeout(nextPuzzle, 2000);
+            } else {
+                result.innerHTML = '😅 Coba lagi!';
+                result.style.color = '#e74c3c';
+            }
+        }
+
+        function nextPuzzle() {
+            currentPuzzle++;
+            if (currentPuzzle >= puzzles.length) {
+                document.getElementById('puzzleQuestion').innerHTML = '<h2>🏆 Selamat!</h2><p>Semua teka-teki selesai!</p><p style="font-size: 2rem;">🎊🎉🎊</p>';
+                return;
+            }
+            const puzzle = puzzles[currentPuzzle];
+            document.getElementById('questionText').textContent = puzzle.question;
+            document.getElementById('puzzleOptions').innerHTML = puzzle.options.map((opt, i) => 
+                `<button class="puzzle-option" onclick="checkAnswer(${i === puzzle.correct})">${opt}</button>`
+            ).join('');
+            document.getElementById('puzzleResult').innerHTML = '';
+        }
+
+        function createWishlistGarden() {
+            const garden = document.getElementById('wishlistGarden');
+            wishes.forEach(wish => {
+                const flower = document.createElement('div');
+                flower.className = 'wish-flower';
+                flower.innerHTML = '<div class="flower-head"></div><div class="flower-stem"></div>';
+                flower.addEventListener('click', () => openWishLetter(wish));
+                garden.appendChild(flower);
+            });
+        }
+
+        function openWishLetter(wish) {
+            createFlyingPetals();
+            document.getElementById('letterTitle').textContent = wish.title;
+            document.getElementById('letterContent').textContent = wish.content;
+            document.getElementById('overlay').classList.add('show');
+            document.getElementById('wishLetter').classList.add('show');
+        }
+
+        function closeLetter() {
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('wishLetter').classList.remove('show');
+        }
+
+        function createFlyingPetals() {
+            const petals = ['🌸', '🌺', '🌼', '🌻', '🌹'];
+            for (let i = 0; i < 8; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+                petal.style.left = Math.random() * window.innerWidth + 'px';
+                petal.style.top = window.innerHeight + 'px';
+                document.body.appendChild(petal);
+                setTimeout(() => petal.remove(), 3000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createBackgroundFlowers();
+            setupCake();
+            createWishlistGarden();
+        });
+    </script>
+</body>
+</html>
